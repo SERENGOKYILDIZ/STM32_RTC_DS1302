@@ -57,6 +57,7 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+#include "usart_printf.h" 		//For debugging
 #include "DS1302.h"
 
 #define GPIO_CE_pin  	GPIO_PIN_4
@@ -102,10 +103,12 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  usart_printf_init(&huart2);
+
   DS1302_HandleTypeDef rtc = {
-		  .CE_Pin = {GPIO_CE_port, GPIO_CE_pin},
-		  .IO_Pin = {GPIO_IO_port, GPIO_IO_pin},
-		  .SCLK_Pin = {GPIO_SCLK_port, GPIO_SCLK_pin}
+		  .CE_Pin = 	{GPIO_CE_port, GPIO_CE_pin},
+		  .IO_Pin = 	{GPIO_IO_port, GPIO_IO_pin},
+		  .SCLK_Pin = 	{GPIO_SCLK_port, GPIO_SCLK_pin}
   };
 
   ds1302_init(&rtc);
@@ -117,8 +120,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
+	  uint8_t data = ds1302_readByte(&rtc, 0x80);
+	  printf("data = %d\n", data);
+	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
