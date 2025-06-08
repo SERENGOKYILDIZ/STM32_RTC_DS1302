@@ -122,8 +122,13 @@ int main(void)
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
 	  int second = ds1302_getSecond(&rtc);
-	  int minutes = ds1302_getMinute(&rtc);
-	  printf("%2d:%2d\n", minutes, second);
+	  int minute = ds1302_getMinute(&rtc);
+	  Hour hour	 = ds1302_getHour(&rtc);
+	  printf("%02d:%02d:%02d", hour.hour, minute, second);
+	  if(hour.meridiem != NONE)
+		  printf("%s\n", (hour.meridiem == AM ? "AM" : "PM"));
+	  else
+		  printf("\n");
 	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */

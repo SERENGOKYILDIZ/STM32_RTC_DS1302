@@ -151,6 +151,23 @@ int ds1302_getMinute(DS1302_HandleTypeDef* handel)
 	return min+(min10*10);
 }
 
+Hour ds1302_getHour(DS1302_HandleTypeDef* handel)
+{
+	uint8_t hour_data_raw = ds1302_readByte(handel, DS1302_HOURS);
+	Hour hour_data;
+	int hour = hour_data_raw & 0b00001111;
+	if((hour_data_raw & 0b10000000)>>7){
+		hour_data.meridiem = (((hour_data_raw & 0b00010000)>>5) ? PM : AM);
+		int hour10 = (hour_data_raw & 0b00010000) >> 4;
+		hour_data.hour = hour10*10+hour;
+	}
+	else{
+		hour_data.meridiem = NONE;
+		int hour10 = (hour_data_raw & 0b00110000) >> 4;
+		hour_data.hour = hour10*10+hour;
+	}
 
+	return hour_data;
+}
 
 

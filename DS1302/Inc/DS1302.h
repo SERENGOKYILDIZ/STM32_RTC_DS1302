@@ -33,6 +33,11 @@
 
 
 
+typedef struct{
+	const GPIO_TypeDef* port;
+	uint16_t pin;
+}GpioPin;
+
 
 typedef enum{
 	AM,
@@ -41,15 +46,14 @@ typedef enum{
 }MeridiemEnum;
 
 typedef struct{
-	const GPIO_TypeDef* port;
-	uint16_t pin;
-}GpioPin;
+	int hour;
+	MeridiemEnum meridiem;
+}Hour;
 
 typedef struct{
 	int sec;
 	int min;
-	int hour;
-	MeridiemEnum meridiem;
+	Hour hour;
 	int date;
 	int month;
 	int year;
@@ -71,6 +75,6 @@ void ds1302_writeByte(DS1302_HandleTypeDef* handel, uint8_t data, uint8_t addres
 
 int ds1302_getSecond(DS1302_HandleTypeDef* handel);
 int ds1302_getMinute(DS1302_HandleTypeDef* handel);
-
+Hour ds1302_getHour(DS1302_HandleTypeDef* handel);
 
 #endif /* DS1302_INC_DS1302_H_ */
