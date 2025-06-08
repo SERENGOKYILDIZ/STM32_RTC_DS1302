@@ -10,6 +10,9 @@
 
 #include "main.h"
 
+
+
+
 #define DS1302_SECONDS 				0X80
 #define DS1302_MINUTES  			0X82
 #define DS1302_HOURS  				0X84
@@ -28,10 +31,29 @@
 
 #define GET_BIT(value, bit) (((value) >> (bit)) & 0x01)
 
+
+
+
+typedef enum{
+	AM,
+	PM,
+	NONE
+}MeridiemEnum;
+
 typedef struct{
 	const GPIO_TypeDef* port;
 	uint16_t pin;
 }GpioPin;
+
+typedef struct{
+	int sec;
+	int min;
+	int hour;
+	MeridiemEnum meridiem;
+	int date;
+	int month;
+	int year;
+}DS1302_TimeRecord;
 
 typedef struct{
 	GpioPin CE_Pin;
@@ -40,8 +62,15 @@ typedef struct{
 }DS1302_HandleTypeDef;
 
 
+
+
 void ds1302_init(DS1302_HandleTypeDef* handel);
+
 uint8_t ds1302_readByte(DS1302_HandleTypeDef* handel, uint8_t address);
 void ds1302_writeByte(DS1302_HandleTypeDef* handel, uint8_t data, uint8_t address);
+
+int ds1302_getSecond(DS1302_HandleTypeDef* handel);
+int ds1302_getMinute(DS1302_HandleTypeDef* handel);
+
 
 #endif /* DS1302_INC_DS1302_H_ */

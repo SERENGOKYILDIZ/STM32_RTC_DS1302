@@ -134,3 +134,23 @@ void ds1302_writeByte(DS1302_HandleTypeDef* handel, uint8_t data, uint8_t addres
 
 	HAL_GPIO_WritePin(handel->CE_Pin.port, handel->CE_Pin.pin, GPIO_PIN_RESET);
 }
+
+int ds1302_getSecond(DS1302_HandleTypeDef* handel)
+{
+	uint8_t sec_data = ds1302_readByte(handel, DS1302_SECONDS);
+	int sec 	= sec_data & 0b00001111;
+	int sec10 	= (sec_data & 0b01110000) >> 4;
+	return sec+(sec10*10);
+}
+
+int ds1302_getMinute(DS1302_HandleTypeDef* handel)
+{
+	uint8_t min_data = ds1302_readByte(handel, DS1302_MINUTES);
+	int min 	= min_data & 0b00001111;
+	int min10 	= (min_data & 0b01110000) >> 4;
+	return min+(min10*10);
+}
+
+
+
+

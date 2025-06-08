@@ -121,9 +121,9 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-	  ds1302_writeByte(&rtc, 20, 0x80);
-	  uint8_t data = ds1302_readByte(&rtc, 0x80);
-	  printf("data = %d\n", data);
+	  int second = ds1302_getSecond(&rtc);
+	  int minutes = ds1302_getMinute(&rtc);
+	  printf("%2d:%2d\n", minutes, second);
 	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
