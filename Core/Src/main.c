@@ -69,6 +69,8 @@ static void MX_USART2_UART_Init(void);
 #define GPIO_SCLK_pin  	GPIO_PIN_6
 #define GPIO_SCLK_port 	GPIOA
 
+char* Days[] = {0, "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+
 /* USER CODE END 0 */
 
 /**
@@ -113,6 +115,20 @@ int main(void)
 
   ds1302_init(&rtc);
 
+  /*
+  //SETTING THE TIME DATE
+  DS1302_TimeRecord datetime={
+		  .sec=0,
+		  .min=29,
+		  .hour={.hour=1,.meridiem=NONE},
+		  .date=10,
+		  .month=6,
+		  .year=25,
+		  .day=TUE
+  };
+
+  ds1302_setTimeDate(&rtc, datetime);
+*/
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -120,20 +136,11 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-	  int second = ds1302_getSecond(&rtc);
-	  int minute = ds1302_getMinute(&rtc);
-	  Hour hour	 = ds1302_getHour(&rtc);
+	  DS1302_TimeRecord now = ds1302_getDateTime(&rtc);
 
-	  int date 	= ds1302_getDate(&rtc);
-	  int month = ds1302_getMonth(&rtc);
-	  int year 	= ds1302_getYear(&rtc);
-	  int day 	= ds1302_getDay(&rtc);
-
-	  printf("%02d-%02d-%02d %02d:%02d:%02d %d ", date, month, year, hour.hour, minute, second, day);
-	  if(hour.meridiem != NONE)
-		  printf("%s\n", (hour.meridiem == AM ? "AM" : "PM"));
-	  else
-		  printf("\n");
+	  printf("%02d-%02d-%02d %s %02d:%02d:%02d ", now.date, now.month, now.year, Days[now.day], now.hour.hour, now.min, now.sec);
+	  if(now.hour.meridiem!=NONE) printf("%s", (now.hour.meridiem==AM)?"AM":"PM");
+	  printf("\n");
 	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
