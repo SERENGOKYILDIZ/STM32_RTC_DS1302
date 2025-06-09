@@ -170,4 +170,105 @@ Hour ds1302_getHour(DS1302_HandleTypeDef* handel)
 	return hour_data;
 }
 
+int ds1302_getDate(DS1302_HandleTypeDef* handel)
+{
+	uint8_t date_data = ds1302_readByte(handel, DS1302_DATE);
+	int date 	= date_data & 0b00001111;
+	int date10 	= (date_data & 0b00110000) >> 4;
+	return date+(date10*10);
+}
 
+int ds1302_getMonth(DS1302_HandleTypeDef* handel)
+{
+	uint8_t month_data = ds1302_readByte(handel, DS1302_MONTH);
+	int month 	= month_data & 0b00001111;
+	int month10 = (month_data & 0b00010000) >> 4;
+	return month+(month10*10);
+}
+
+int ds1302_getYear(DS1302_HandleTypeDef* handel)
+{
+	uint8_t year_data = ds1302_readByte(handel, DS1302_YEAR);
+	int year 	= year_data & 0b00001111;
+	int year10 	= (year_data & 0b11110000) >> 4;
+	return year+(year10*10);
+}
+
+DaysEnum ds1302_getDay(DS1302_HandleTypeDef* handel)
+{
+	uint8_t day_data = ds1302_readByte(handel, DS1302_DAY);
+	int day = day_data & 0b00000111;
+	return day;
+}
+
+bool ds1302_setSecond(DS1302_HandleTypeDef* handel, uint8_t second)
+{
+	if(second > 59) return false;
+	int second1 	=  second % 10;
+	int second10 	=  second / 10;
+	uint8_t second_data = (second10 << 4) | second1;
+	ds1302_writeByte(handel, second_data, DS1302_SECONDS);
+	return true;
+}
+
+bool ds1302_setMinute(DS1302_HandleTypeDef* handel, uint8_t minute)
+{
+	if(minute > 59) return false;
+	int minute1 	=  minute % 10;
+	int minute10 	=  minute / 10;
+	uint8_t minute_data = (minute10 << 4) | minute1;
+	ds1302_writeByte(handel, minute_data, DS1302_MINUTES);
+	return true;
+}
+
+bool ds1302_setHour(DS1302_HandleTypeDef* handel, Hour hour)
+{
+	if((hour.hour > 23 && hour.meridiem==NONE) || (hour.hour > 12 && hour.meridiem!=NONE)) return false;
+	int hour1 	=  hour.hour % 10;
+	int hour10 	=  hour.hour / 10;
+	uint8_t hour_data = (hour10 << 4) | hour1;
+	if(hour.meridiem != NONE)
+	{
+		hour_data |= 0b10000000;
+		if(hour.meridiem == PM)
+			hour_data |= 0b00100000;
+	}
+	ds1302_writeByte(handel, hour_data, DS1302_HOURS);
+	return true;
+}
+
+bool ds1302_setDate(DS1302_HandleTypeDef* handel, uint8_t date)
+{
+	if(date > 31) return false;
+	int date1 	=  date % 10;
+	int date10 	=  date / 10;
+	uint8_t date_data = (date10 << 4) | date1;
+	ds1302_writeByte(handel, date_data, DS1302_DATE);
+	return true;
+}
+
+bool ds1302_setMonth(DS1302_HandleTypeDef* handel, uint8_t month)
+{
+	if(month > 12) return false;
+	int month1 	=  month % 10;
+	int month10 =  month / 10;
+	uint8_t month_data = (month10 << 4) | month1;
+	ds1302_writeByte(handel, month_data, DS1302_MONTH);
+	return true;
+}
+
+bool ds1302_setYear(DS1302_HandleTypeDef* handel, uint8_t year)
+{
+	if(year > 99) return false;
+	int year1 	=  year % 10;
+	int year10 	=  year / 10;
+	uint8_t year_data = (year10 << 4) | year1;
+	ds1302_writeByte(handel, year_data, DS1302_YEAR);
+	return true;
+}
+
+bool ds1302_setDay(DS1302_HandleTypeDef* handel, DaysEnum day)
+{
+	ds1302_writeByte(handel, day, DS1302_DAY);
+	return true;
+}

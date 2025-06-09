@@ -114,7 +114,6 @@ int main(void)
   ds1302_init(&rtc);
 
   /* USER CODE END 2 */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -124,7 +123,13 @@ int main(void)
 	  int second = ds1302_getSecond(&rtc);
 	  int minute = ds1302_getMinute(&rtc);
 	  Hour hour	 = ds1302_getHour(&rtc);
-	  printf("%02d:%02d:%02d", hour.hour, minute, second);
+
+	  int date 	= ds1302_getDate(&rtc);
+	  int month = ds1302_getMonth(&rtc);
+	  int year 	= ds1302_getYear(&rtc);
+	  int day 	= ds1302_getDay(&rtc);
+
+	  printf("%02d-%02d-%02d %02d:%02d:%02d %d ", date, month, year, hour.hour, minute, second, day);
 	  if(hour.meridiem != NONE)
 		  printf("%s\n", (hour.meridiem == AM ? "AM" : "PM"));
 	  else

@@ -9,10 +9,9 @@
 #define DS1302_INC_DS1302_H_
 
 #include "main.h"
+#include <stdbool.h>
 
-
-
-
+//--------------------------------------------- DEFINES ---------------------------------------------//
 #define DS1302_SECONDS 				0X80
 #define DS1302_MINUTES  			0X82
 #define DS1302_HOURS  				0X84
@@ -30,20 +29,18 @@
 #define DS1302_RAM_BUST_READ 		0XFF
 
 #define GET_BIT(value, bit) (((value) >> (bit)) & 0x01)
+//---------------------------------------------------------------------------------------------------//
 
-
-
+//--------------------------------------------- STRUCTS ---------------------------------------------//
 typedef struct{
 	const GPIO_TypeDef* port;
 	uint16_t pin;
 }GpioPin;
 
 
-typedef enum{
-	AM,
-	PM,
-	NONE
-}MeridiemEnum;
+typedef enum{AM,PM,NONE}MeridiemEnum;
+
+typedef enum{MON=1, TUE, WED, THU, FRI, SAT, SUN}DaysEnum;
 
 typedef struct{
 	int hour;
@@ -57,6 +54,7 @@ typedef struct{
 	int date;
 	int month;
 	int year;
+	DaysEnum day;
 }DS1302_TimeRecord;
 
 typedef struct{
@@ -64,17 +62,34 @@ typedef struct{
 	GpioPin IO_Pin;
 	GpioPin SCLK_Pin;
 }DS1302_HandleTypeDef;
+//---------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------- FUNCTIONS ---------------------------------------------//
 
-
-
+//Initialization
 void ds1302_init(DS1302_HandleTypeDef* handel);
 
+//Byte Operations
 uint8_t ds1302_readByte(DS1302_HandleTypeDef* handel, uint8_t address);
 void ds1302_writeByte(DS1302_HandleTypeDef* handel, uint8_t data, uint8_t address);
 
+//Get Operations
 int ds1302_getSecond(DS1302_HandleTypeDef* handel);
 int ds1302_getMinute(DS1302_HandleTypeDef* handel);
 Hour ds1302_getHour(DS1302_HandleTypeDef* handel);
+int ds1302_getDate(DS1302_HandleTypeDef* handel);
+int ds1302_getMonth(DS1302_HandleTypeDef* handel);
+int ds1302_getYear(DS1302_HandleTypeDef* handel);
+DaysEnum ds1302_getDay(DS1302_HandleTypeDef* handel);
+
+//Set Operations
+bool ds1302_setSecond(DS1302_HandleTypeDef* handel, uint8_t second);
+bool ds1302_setMinute(DS1302_HandleTypeDef* handel, uint8_t minute);
+bool ds1302_setHour(DS1302_HandleTypeDef* handel, Hour hour);
+bool ds1302_setDate(DS1302_HandleTypeDef* handel, uint8_t date);
+bool ds1302_setMonth(DS1302_HandleTypeDef* handel, uint8_t month);
+bool ds1302_setYear(DS1302_HandleTypeDef* handel, uint8_t year);
+bool ds1302_setDay(DS1302_HandleTypeDef* handel, DaysEnum day);
+//--------------------------------------------------------------------------------------------------------///
 
 #endif /* DS1302_INC_DS1302_H_ */
