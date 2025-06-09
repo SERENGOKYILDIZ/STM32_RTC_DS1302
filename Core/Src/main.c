@@ -129,6 +129,8 @@ int main(void)
 
   ds1302_setTimeDate(&rtc, datetime);
 */
+
+
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -138,9 +140,14 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  DS1302_TimeRecord now = ds1302_getDateTime(&rtc);
 
+	  /*
 	  printf("%02d-%02d-%02d %s %02d:%02d:%02d ", now.date, now.month, now.year, Days[now.day], now.hour.hour, now.min, now.sec);
 	  if(now.hour.meridiem!=NONE) printf("%s", (now.hour.meridiem==AM)?"AM":"PM");
 	  printf("\n");
+	  */
+
+	  printf("%s\n", DS1302_getDateTime_ISO(&rtc, now));
+
 	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */

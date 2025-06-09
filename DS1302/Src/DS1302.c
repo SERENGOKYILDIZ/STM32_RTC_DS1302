@@ -214,6 +214,20 @@ void ds1302_updateDateTime(DS1302_HandleTypeDef* handel, DS1302_TimeRecord* date
 	datetime->day=ds1302_getDay(handel);
 }
 
+char* DS1302_getDateTime_ISO(DS1302_HandleTypeDef* handle, DS1302_TimeRecord datetime)
+{
+    static char buffer[50];
+    sprintf(buffer, "%04d-%02d-%02d %02d:%02d:%02d",
+            datetime.year + 2000,
+            datetime.month,
+            datetime.date,
+            datetime.hour.hour,
+            datetime.min,
+            datetime.sec);
+    return buffer;
+}
+
+
 bool ds1302_setSecond(DS1302_HandleTypeDef* handel, uint8_t second)
 {
 	if(second > 59) return false;

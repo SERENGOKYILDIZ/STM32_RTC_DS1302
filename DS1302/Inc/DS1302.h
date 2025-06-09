@@ -85,6 +85,7 @@ int ds1302_getYear(DS1302_HandleTypeDef* handel);
 DaysEnum ds1302_getDay(DS1302_HandleTypeDef* handel);
 DS1302_TimeRecord ds1302_getDateTime(DS1302_HandleTypeDef* handel);
 void ds1302_updateDateTime(DS1302_HandleTypeDef* handel, DS1302_TimeRecord* datetime);
+char* DS1302_getDateTime_ISO(DS1302_HandleTypeDef* handel, DS1302_TimeRecord datetime);
 
 //SET Operations
 bool ds1302_setSecond(DS1302_HandleTypeDef* handel, uint8_t second);
@@ -95,6 +96,7 @@ bool ds1302_setMonth(DS1302_HandleTypeDef* handel, uint8_t month);
 bool ds1302_setYear(DS1302_HandleTypeDef* handel, uint8_t year);
 bool ds1302_setDay(DS1302_HandleTypeDef* handel, DaysEnum day);
 bool ds1302_setDateTime(DS1302_HandleTypeDef* handel, DS1302_TimeRecord datetime);
+
 //--------------------------------------------------------------------------------------------------------///
 
 #endif /* DS1302_INC_DS1302_H_ */
