@@ -28,7 +28,9 @@
 #define DS1302_RAM_BUST_WRITE 		0XFE
 #define DS1302_RAM_BUST_READ 		0XFF
 
-#define GET_BIT(value, bit) (((value) >> (bit)) & 0x01)
+#define GET_BIT(value, bit) 	(((value) >> (bit)) & 0x01)
+#define DECTOBCD(value) 		(((value / 10) << 4) | (value % 10))
+#define BCDTODEC(value) 		((value & 0b00001111)+(((value & 0b11110000) >> 4)*10))
 //---------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------- STRUCTS ---------------------------------------------//
