@@ -74,32 +74,22 @@ DS1302/
 
 ## 🔍 Function Descriptions
 
-### `void DS1302_Init(void)`
+### `void ds1302_init(void)`
 Initializes GPIOs for the DS1302 interface. Sets CLK, IO, and CE pins as needed.
 
 ---
 
-### `void DS1302_WriteByte(uint8_t byte)`
+### `void ds1302_writeByte(uint8_t byte)`
 Sends a byte to the DS1302 one bit at a time via bit-banging protocol.
 
 ---
 
-### `uint8_t DS1302_ReadByte(void)`
+### `uint8_t ds1302_readByte(void)`
 Reads a byte from the DS1302, bit by bit, using manual GPIO control.
 
 ---
 
-### `void DS1302_WriteRegister(uint8_t reg, uint8_t data)`
-Writes `data` to the register specified by `reg`. Sends the write command followed by the byte.
-
----
-
-### `uint8_t DS1302_ReadRegister(uint8_t reg)`
-Reads and returns the value of a register from the DS1302.
-
----
-
-### `void DS1302_SetDateTime(...)`
+### `bool ds1302_setDateTime(...)`
 Sets the RTC with given values by The `DS1302_TimeRecord` struct:
 - `sec`: Seconds
 - `min`: Minutes
@@ -111,12 +101,12 @@ Sets the RTC with given values by The `DS1302_TimeRecord` struct:
 
 ---
 
-### `void DS1302_GetDateTime(...)`
+### `DS1302_TimeRecord ds1302_getDateTime(...)`
 Fills the provided pointer variables with the current time and date values from the RTC.
 
 ---
 
-### `void DS1302_GetFormattedString(char *buffer)`
+### `char* DS1302_getDateTime_ISO(char *buffer)`
 Formats the current time and date as a human-readable string:
 `YYYY-MM-DD HH:MM:DD`
 
