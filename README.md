@@ -106,7 +106,7 @@ Fills the provided pointer variables with the current time and date values from 
 
 ---
 
-### `char* DS1302_getDateTime_ISO(char *buffer)`
+### `char* ds1302_getDateTime_ISO(char *buffer)`
 Formats the current time and date as a human-readable string:
 `YYYY-MM-DD HH:MM:DD`
 
